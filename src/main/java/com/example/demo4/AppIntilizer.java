@@ -6,22 +6,24 @@ import com.example.demo4.entités.Client;
 import com.example.demo4.entités.Vol;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AppIntilizer {
 
 
     public  static void  main(String args []){
-        System.out.println("\n\n");
-        List<Aeroports> aeroports = findAllAeroports();
 
-        for (Aeroports aeroports1 : aeroports) {
-            System.out.println("ville : " + aeroports1.getNomdaeroport());
-        }
+
+     //
+
+
     }
 
 
@@ -45,6 +47,7 @@ public class AppIntilizer {
 
 
         }
+
 //        try ( Session session = HibernateUtil.getSessionFactory().openSession()) {
 //            transaction = session.beginTransaction();
 //                aeroports = session.get(Aeroports.class, aeroportsId);
@@ -71,8 +74,32 @@ public class AppIntilizer {
         return vols;
 
     }
-    public static List<Aeroports> findAllAeroports() {
-        return  entityManager.createQuery("SELECT a FROM Aeroports a", Aeroports.class).getResultList();
-
+    public static Vol findVolById(int volId) {
+        return entityManager.find(Vol.class, volId);
     }
+    public List<Vol> searchVol(Aeroports aeroportArrivee, Aeroports aeroportDepart, Date dateArrivee, Date dateDepart) {
+        List<Vol> vols = new ArrayList<>();
+
+        try {
+            String hql = "FROM Vol WHERE villearrivee = :arrivee AND villedepart = :depart " +
+                    "AND YEAR(dateetheurearrivée) = YEAR(:dateArrivee) " +
+                    "AND MONTH(dateetheurearrivée) = MONTH(:dateArrivee) " +
+                    "AND DAY(dateetheurearrivée) = DAY(:dateArrivee) " +
+                    "AND YEAR(dateetheurededépart) = YEAR(:dateDepart) " +
+                    "AND MONTH(dateetheurededépart) = MONTH(:dateDepart) " +
+                    "AND DAY(dateetheurededépart) = DAY(:dateDepart)";
+            Query query = entityManager.createQuery(hql);
+            query.setParameter("arrivee", aeroportArrivee);
+            query.setParameter("depart", aeroportDepart);
+            query.setParameter("dateArrivee", dateArrivee);
+            query.setParameter("dateDepart", dateDepart);
+
+            vols = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return vols;
+    }
+
 }

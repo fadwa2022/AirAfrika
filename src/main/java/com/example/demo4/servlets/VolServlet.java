@@ -1,30 +1,43 @@
 package com.example.demo4.servlets;
 
 import com.example.demo4.entités.Aeroports;
+import com.example.demo4.entités.Escal;
 import com.example.demo4.entités.Vol;
 import com.example.demo4.services.AeroportsService;
+import com.example.demo4.services.EscalService;
 import com.example.demo4.services.VolService;
+import com.example.demo4.standard.ConvertirDate;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.example.demo4.standard.ConvertirDate.convertirEnDate;
 
 
 @WebServlet( name = "Vols",value = "/Vols")
 
 public class VolServlet extends HttpServlet {
     VolService volService = new VolService();
-
     AeroportsService aeroportsService =new AeroportsService();
+    EscalService escalService = new EscalService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 
         int villeDepart = Integer.parseInt(request.getParameter("villedepart"));
         int villeArrivee = Integer.parseInt(request.getParameter("villearrivee"));
-        String dateHeureDepartStr = request.getParameter("dateetheurededépart");
-        String dateHeureArriveeStr = request.getParameter("dateetheurearrivée");
+        String dateHeureDepartStr = request.getParameter("dateetheurededepart");
+        String dateHeureArriveeStr = request.getParameter("dateetheurearrivee");
+        int tarif = Integer.parseInt( request.getParameter("tarif"));
+        int dernierId = Integer.parseInt(request.getParameter("dernierId"));
         int nombreDePlaces = Integer.parseInt(request.getParameter("nombreDePlacesDisponibles"));
 
 
@@ -35,24 +48,24 @@ public class VolServlet extends HttpServlet {
         Aeroports aeroportArrivee = aeroportsService.findAeroportByID(villeArrivee);
 
         // Créez un objet Vol avec les données
-        Vol vol = new Vol(aeroportDepart, aeroportArrivee, dateHeureDepart, dateHeureArrivee, nombreDePlaces);
+        Vol vol = new Vol(aeroportDepart, aeroportArrivee, dateHeureDepart, dateHeureArrivee, nombreDePlaces,tarif);
 
-        // Enregistrez le vol en utilisant un service approprié
-        volService.addVol(vol);
 
-        // Redirigez l'utilisateur vers une page de confirmation ou une autre page de votre choix
-        response.sendRedirect("/confirmation.jsp");
-    }
 
-    private Date convertirEnDate(String dateStr) {
+        List<Integer> escal = new ArrayList<>();
 
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-       try {
-       return dateFormat.parse(dateStr);
-       } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+        int i = 1;
+        while (request.getParameter("escale"+i) != null){
+            escal.add(Integer.parseInt(request.getParameter("escale"+i)));
+            i++;
         }
-        return null;
+
+        volService.addVol(vol,escal,dernierId);
+
+
+
+        response.sendRedirect(request.getContextPath() + "/dashboard");
     }
+
+
 }

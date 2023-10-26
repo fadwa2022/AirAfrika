@@ -3,6 +3,7 @@ package com.example.demo4.dao.Impl;
 import com.example.demo4.connection.Jpa;
 import com.example.demo4.dao.ClientDAO;
 import com.example.demo4.entités.Client;
+import com.example.demo4.entités.Vol;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
@@ -48,7 +49,7 @@ public class ClientDAOImpl implements ClientDAO {
 
     @Override
     public Client findClientByID(int clientId) {
-        return null;
+        return entityManager.find(Client.class, clientId);
     }
 
     @Override

@@ -27,16 +27,28 @@ public class Vol {
     private Date dateetheurearrivée;
     @Column(name = "nombredeplacesdisponibles")
     private int nombreDePlacesDisponibles;
+    @Column(name = "tarif")
+
+    private float tarif;
+
+    public float getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(float tarif) {
+        this.tarif = tarif;
+    }
 
     public Vol() {
     }
 
-    public Vol( Aeroports villedepart, Aeroports villearrivee, Date dateetheurededépart, Date dateetheurearrivée, int nombreDePlacesDisponibles) {
+    public Vol( Aeroports villedepart, Aeroports villearrivee, Date dateetheurededépart, Date dateetheurearrivée, int nombreDePlacesDisponibles,float tarif) {
         this.villedepart = villedepart;
         this.villearrivee = villearrivee;
         this.dateetheurededépart = dateetheurededépart;
         this.dateetheurearrivée = dateetheurearrivée;
         this.nombreDePlacesDisponibles = nombreDePlacesDisponibles;
+        this.tarif = tarif;
     }
 
     public int getId() {

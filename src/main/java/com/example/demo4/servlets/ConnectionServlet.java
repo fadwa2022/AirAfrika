@@ -12,7 +12,7 @@ public class ConnectionServlet  extends HttpServlet {
         String password = request.getParameter("password");
         Cookie emailCookie = new Cookie("email", email);
         Cookie passwordCookie = new Cookie("password", password);
-        emailCookie.setMaxAge(3600); // Par exemple, 1 heure
+        emailCookie.setMaxAge(3600);
         passwordCookie.setMaxAge(3600);
         response.addCookie(emailCookie);
         response.addCookie(passwordCookie);

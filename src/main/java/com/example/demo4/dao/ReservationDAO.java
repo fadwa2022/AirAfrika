@@ -7,11 +7,11 @@ import com.example.demo4.entités.Vol;
 import java.util.List;
 import java.util.Optional;
 public interface ReservationDAO {
-    public Optional<Reservation>addReservation(Reservation reservation);
-    public Optional<Reservation>updateClient(Reservation reservation);
-    public Optional<Reservation>deleteReservation(int reservationId);
-    public  Optional<List<Reservation>> findAllReservation() ;
-    public Optional<List<Reservation>> findReservationByClient(Client client);
-    public Optional<List<Reservation>> findReservationByvol(Vol vol);
+    public Reservation addReservation(Reservation reservation);
+    public Reservation updateClient(Reservation reservation);
+    public Reservation deleteReservation(int reservationId);
+    public  List<Reservation> findAllReservation() ;
+    public List<Reservation> findReservationByClient(Client client);
+    public List<Reservation> findReservationByvol(Vol vol);
 
 }

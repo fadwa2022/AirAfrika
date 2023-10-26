@@ -37,8 +37,11 @@ public class ClientServlet extends HttpServlet {
        }
        if (client != null) {
            Cookie clientEmail = new Cookie("clientEmail", client.getEmail());
+           Cookie clientID = new Cookie("clientID", String.valueOf(client.getId()));
+           clientID.setMaxAge(30 * 60);
            clientEmail.setMaxAge(30 * 60);
            response.addCookie(clientEmail);
+           response.addCookie(clientID);
 
            response.sendRedirect("home");
    } else {

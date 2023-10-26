@@ -38,8 +38,14 @@ public class ClientService {
         Client searchedClient= null;
         searchedClient = clientDAOImpl.findClientByEmail(email, password);
 
-        return searchedClient ; // Si l'ajout du client a réussi envoyer true
+        return searchedClient ;
     }
-
+    public  Client findClientByID (int clientid){
+        if (clientDAOImpl != null) {
+            return clientDAOImpl.findClientByID(clientid);
+        } else {
+            throw new NullPointerException("extraDAOImpl is null");
+        }
+    }
 
 }
